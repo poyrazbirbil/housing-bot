@@ -3,7 +3,11 @@ name: Studio Availability Checker
 on:
   schedule:
     # Every 3 hours
+<<<<<<< HEAD
     - cron: "0 */3 * * *"
+=======
+    - cron: '0 * * * *'
+>>>>>>> 4a583f1661fa2779a69805d54caecbc12e60936e
   workflow_dispatch:
 
 jobs:
