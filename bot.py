@@ -12,8 +12,21 @@ URLS = {
     "Student Experience Zuidas": "https://studentexperience.com/studios?los=longstay&locationId=3",
     "Student Experience Amstel": "https://studentexperience.com/studios?los=longstay&locationId=5",
     "OurCampus Diemen": "https://new-ourcampus-amsterdam-diemen-rentcafewebsiteuk.securerc.co.uk/onlineleasing/new-ourcampus-amsterdam-diemen/floorplans.aspx",
+     "The Social Hub Amsterdam City": "https://www.thesocialhub.co/book-student-room/?hotelId=AMS02",
 }
 
+def socialhub_status(page):
+    bubble = page.locator(
+        ".BubbleMessage__InfoBubbleContainer.BubbleMessage__InfoBubbleContainer--Failure"
+    )
+
+    if bubble.count() > 0:
+        text = bubble.inner_text().lower()
+
+        if "no availability" in text:
+            return False
+
+    return True
 
 def student_experience_status(page):
     text = page.locator("body").inner_text().lower()
@@ -106,6 +119,13 @@ def check_site(browser, name, url):
                 status = f"✅ {studio_count} available floor plan(s)"
             else:
                 status = "❌ No floor plans available"
+        elif "thesocialhub.co" in url:
+            available = socialhub_status(page)
+
+            if available:
+                status = "✅ Rooms available"
+            else:
+                status = "❌ No rooms available"
         else:
             available = page_available(text)
             studio_count = None
