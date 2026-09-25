@@ -2,7 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
-
+from grand_relocation import grandreloc
 load_dotenv()
 
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
@@ -165,14 +165,17 @@ def main():
         browser.close()
 
     message = "🏠 Studio Availability Report\n\n"
-
+    data = grandreloc()
+    print(data)
     for r in results:
         message += (
             f"{r['name']}\n"
             f"{r['status']}\n"
             f"{r['url']}\n\n"
         )
-
+    
+    message += f"{data}"
+    print(message)
     telegram(message)
 
 
